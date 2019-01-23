@@ -6,7 +6,6 @@ const get_tracks = () => {
     return new Promise((resolve, reject) => {
         fs.readFile(txt_path, 'utf8', (err, data) => {
             data = data.split('\n')
-            console.log(data);
             resolve(data)
         })
     })

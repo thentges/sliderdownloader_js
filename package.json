@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/thentges/sliderdownloader_js#readme",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "node-notifier": "^5.3.0"
   }
 }
