@@ -18,11 +18,12 @@ const get_tracks = async () => {
     await Promise.all(
         track_names.map(
             async track_name => {
-                return await get_track(track_name)
+                if (track_name)
+                    return await get_track(track_name)
             }
         )
     )
-    notifications.end()
+    notifications.end(track_names)
 }
 
 get_tracks()

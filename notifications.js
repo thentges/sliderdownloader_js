@@ -25,12 +25,17 @@ const start = () => {
 }
 
 const start_info = (track_names) => {
-    send_notification("SliderDownloader", `${track_names.length} tracks to download`)
+    if (track_names.length === 1 && !track_names[0])
+        // TODO open the txt file
+        send_notification("SliderDownloader", 'no tracks to download')
+    else
+        send_notification("SliderDownloader", `${track_names.length} tracks to download`)
 }
 
 // TODO add onclick to open the dir
-const end = () => {
-    send_notification("SliderDownloader", `all tracks downloaded in ${config.download_dir}`)
+const end = (track_names) => {
+    if (track_names.length > 1 || track_names[0])
+        send_notification("SliderDownloader", `all tracks downloaded in ${config.download_dir}`)
 }
 
 module.exports = {
