@@ -34,8 +34,11 @@ const start_info = (track_names) => {
 
 // TODO add onclick to open the dir
 const end = (track_names) => {
-    if (track_names.length > 1 || track_names[0])
+    if (track_names && (track_names.length > 1 || track_names[0])) {
         send_notification("SliderDownloader", `all tracks downloaded in ${config.download_dir}`)
+    }
+    else if (!track_names)
+        send_notification("SliderDownloader", 'no track to downloads')
 }
 
 module.exports = {

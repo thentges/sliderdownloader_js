@@ -23,7 +23,7 @@ const download = async (url, track_name) => {
       })
 }
 
-// get 5 first results
+// get all results
 const get_possibilities = async track_name => {
     let url = get_url(INFO_URL, track_name)
     possibilities = await get_request(INFO_URL, url)
@@ -31,23 +31,52 @@ const get_possibilities = async track_name => {
 }
 
 // get the best download link within possibilities array
-const get_best_link = async possibilities => {
-    let cursor = possibilities[0]
-    await get_all_bitrates(possibilities)
-    const best_track = get_best_track(possibilities)
+const get_best_link = async (possibilities, track_name) => {
+    const restricted_pos = reduce_possibilities(possibilities, track_name)
+    await get_all_bitrates(restricted_pos)
+    const best_track = get_best_track(restricted_pos)
     const best_link = get_url(DOWNLOAD_URL, best_track)
     return best_link
 }
 
+// TODO clean this method
+// TODO + add cleaner_match (contains check)
+const reduce_possibilities = (possibilities , track_name) => {
+    const exact_match = []
+    possibilities.forEach(
+        track => {
+            if (!track.tit_art){
+                throw new Error(track_name + " no match");
+                // TODO suppr le fichier
+            }
+            else if (track.tit_art.toUpperCase() === track_name.toUpperCase())
+                exact_match.push(track)
+
+            if (exact_match.length === 5){
+                console.log(`[MATCHING] limit at 5 exact matches for ${track_name}`)
+                return exact_match;
+            }
+
+        }
+    )
+    if (exact_match.length < 1){
+        console.log(`[MATCHING] no exact match ${track_name}`)
+        return possibilities.slice(0, LIMIT)
+    }
+    console.log(`[MATCHING] ${exact_match.length} exact matches for ${track_name}`)
+    return exact_match
+}
+
 // get the best track from possibilities
 const get_best_track = possibilities => {
-    cursor = possibilities[0]
+    let cursor = possibilities[0]
     possibilities.forEach(
         (track) => {
             if (track.bitrate > cursor.bitrate && track.duration >= cursor.duration)
                 cursor = track
         }
     )
+    console.log(`[BEST] ${cursor.tit_art} : ${cursor.bitrate}kbits/s`)
     return cursor
 }
 
@@ -84,7 +113,6 @@ const convert_data = (type, resp) => {
             resp = resp.data.audios
             resp = Object.values(resp)
             resp = resp[0]
-            resp = resp.slice(0, LIMIT)
             break
         // data to bitrate
         case MORE_INFO_URL:
@@ -101,7 +129,7 @@ const get_url = (type, object) => {
     switch (type) {
         case INFO_URL:
             track_name = object
-            return INFO_URL + track_name
+            return INFO_URL + encodeURIComponent(track_name)
             break
         case MORE_INFO_URL:
             track = object
