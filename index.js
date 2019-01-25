@@ -2,13 +2,15 @@ const slider = require('./slider.js')
 const system = require('./system.js')
 const notifications = require('./notifications.js')
 
+// used for the mail report
+const downloaded_tracks = []
+
 // download a track from track_name
 const get_track = async track_name => {
     try {
         let possibilities = await slider.get_possibilities(track_name)
         let link = await slider.get_best_link(possibilities, track_name)
         await slider.download(link, track_name)
-        notifications.track_downloaded(track_name)
     } catch (e) {
         console.log(`[ERROR] ${e.message}`);
     }
@@ -16,10 +18,9 @@ const get_track = async track_name => {
 
 // download all tracks in track_names array
 const get_tracks = async () => {
-    notifications.start()
     try {
         const track_names = await system.get_tracks()
-        notifications.start_info(track_names)
+        notifications.start(track_names)
         await Promise.all(
             track_names.map(
                 async track_name => {
@@ -30,7 +31,7 @@ const get_tracks = async () => {
         )
         notifications.end(track_names)
     } catch (e) {
-        notifications.end()
+        console.log(`[OVER] NO TRACK TO DOWNLOAD`)
     }
 }
 

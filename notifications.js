@@ -1,5 +1,6 @@
 const notifier = require('node-notifier')
 const config = require('./config')
+const mailer = require('./mailer')
 
 const send_notification = (title, message, onClick) => {
     notifier.notify(
@@ -16,34 +17,24 @@ const send_notification = (title, message, onClick) => {
     });
 }
 
-const track_downloaded = (track_name) => {
-    send_notification(track_name, `has been downloaded`)
-}
-
-const start = () => {
-    send_notification("SliderDownloader", `started downloading tracks from ${config.txt_path}`)
-}
-
-const start_info = (track_names) => {
+const start = (track_names) => {
     if (track_names.length === 1 && !track_names[0])
-        // TODO open the txt file
-        send_notification("SliderDownloader", 'no tracks to download')
+        // TODO open the txt file on click
+        send_notification('no tracks to download', `${config.txt_path} is empty`)
     else
-        send_notification("SliderDownloader", `${track_names.length} tracks to download`)
+        send_notification(`${track_names.length} tracks to download`, `started downloading tracks from ${config.txt_path}`)
 }
 
 // TODO add onclick to open the dir
 const end = (track_names) => {
-    if (track_names && (track_names.length > 1 || track_names[0])) {
+    // if we downloaded something
+    if ((track_names.length > 1 || track_names[0])) {
         send_notification("SliderDownloader", `all tracks downloaded in ${config.download_dir}`)
+        mailer.send_recap()
     }
-    else if (!track_names)
-        send_notification("SliderDownloader", 'no track to downloads')
 }
 
 module.exports = {
     start,
-    track_downloaded,
-    end,
-    start_info
+    end
 }

@@ -1,4 +1,9 @@
 {
     "txt_path": "./tracks.txt",
-    "download_dir": "./"
+    "download_dir": "./",
+    "mail": {
+        "service": "gmail",
+        "username": "yourmail",
+        "password": "yourpassword",
+        "recipient": null
 }
