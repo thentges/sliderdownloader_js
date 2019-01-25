@@ -10,13 +10,28 @@ const transport = nodemailer.createTransport({
 });
 
 
-const send_recap = () => {
+const send_recap = (tracks, not_found) => {
     console.log(`[MAILER] starting`)
+    let html = ''
+    tracks.forEach(
+        (track) => {
+            html += `<b>${track.track_name}</b> <br />
+            downloaded: ${track.tit_art} <br />
+        bitrates: ${track.bitrate}kbits/s <br /><br />`
+        }
+    )
+    html += '<br /><b>NOT FOUND:</b> <br/>'
+    not_found.forEach(
+        (track) => {
+            html += `${track}<br />`
+        }
+    )
+
     const options = {
       from: config.mail.username,
       to: config.mail.recipient || config.mail.username,
       subject: `[sliderdownloader_js] your daily report`,
-      html: `<p>this is your daily report bro</p>`
+      html
     };
 
     transport.sendMail(options,

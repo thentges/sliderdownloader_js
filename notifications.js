@@ -1,6 +1,5 @@
 const notifier = require('node-notifier')
 const config = require('./config')
-const mailer = require('./mailer')
 
 const send_notification = (title, message, onClick) => {
     notifier.notify(
@@ -30,7 +29,6 @@ const end = (track_names) => {
     // if we downloaded something
     if ((track_names.length > 1 || track_names[0])) {
         send_notification("SliderDownloader", `all tracks downloaded in ${config.download_dir}`)
-        mailer.send_recap()
     }
 }
 
