@@ -1,6 +1,4 @@
 #!/bin/sh
-# this line is to make sure the commands are available
-PATH=/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin
 BASEDIR=$(dirname $0)
 
 echo 'this is the installation guide in order to configure the scripts'
@@ -31,4 +29,4 @@ echo "{
 }" >> config.json
 
 
-cd $BASEDIR && npm install && chmod +x ./script.sh
+cd $BASEDIR && npm install && chmod +x ./run.sh

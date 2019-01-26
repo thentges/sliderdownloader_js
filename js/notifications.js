@@ -1,5 +1,5 @@
 const notifier = require('node-notifier')
-const config = require('./config')
+const config = require('../config')
 
 const send_notification = (title, message, onClick) => {
     notifier.notify(

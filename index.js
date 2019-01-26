@@ -1,7 +1,7 @@
-const slider = require('./slider.js')
-const system = require('./system.js')
-const notifications = require('./notifications.js')
-const mailer = require('./mailer.js')
+const slider = require('./js/slider.js')
+const system = require('./js/system.js')
+const notifications = require('./js/notifications.js')
+const mailer = require('./js/mailer.js')
 
 // download a track from track_name
 const get_track = async track_name => {

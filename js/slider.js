@@ -1,6 +1,6 @@
 const axios = require('axios')
 const fs = require('fs')
-const config = require('./config.json')
+const config = require('../config.json')
 
 const INFO_URL = 'http://slider.kz/vk_auth.php?q='
 const MORE_INFO_URL = 'http://slider.kz/info/'
