@@ -4,7 +4,7 @@ const config = require('../config')
 const send_notification = (title, message, onClick) => {
     if (!config.pref.notif)
         return
-        
+
     notifier.notify(
       {
         title,
@@ -23,8 +23,7 @@ const start = (track_names) => {
     send_notification(`${track_names.length} tracks to download`, `started downloading tracks from ${config.txt_path}`)
 }
 
-// TODO add onclick to open the dir
-const end = (track_names) => {
+const end = () => {
     send_notification("SliderDownloader", `all tracks downloaded in ${config.download_dir}`)
 }
 

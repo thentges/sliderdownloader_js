@@ -32,7 +32,7 @@ const get_tracks = async () => {
             )
         )
         system.clear_file()
-        notifications.end(track_names)
+        notifications.end()
         mailer.send_recap()
     } catch (e) {
         if (e.name === "EmptyFileError")

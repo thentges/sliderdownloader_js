@@ -30,8 +30,6 @@ const get_best_track_with_link = async (possibilities, track_name) => {
     return {link: best_link, ...best_track}
 }
 
-// TODO clean this method
-// TODO + add cleaner_match (contains check)
 const reduce_possibilities = (possibilities , track_name) => {
     const exact_match = []
     possibilities.forEach(

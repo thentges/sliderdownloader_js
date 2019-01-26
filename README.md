@@ -48,7 +48,7 @@ Here is how you can do it easily:
     * * * * * {your_dir}/run.sh
 ```
 replace the 5 stars with the crontab command you like <br />
-If you don't know how to configure a cron, you can visit [this link](https://crontab.guru) to do it easily. <br/> </br>
+If you don't know how to configure a cron, you can visit [this link](https://crontab.guru) to do it easily. <br/>
 
 replace {your_dir} with the path to the cloned directory
 #### or just run it manually when you want
