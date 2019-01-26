@@ -12,6 +12,7 @@ read -sp 'enter your (sender) email password ::: ' mail_password
 echo
 read -p 'enter your mail (receiving) recaps ::: ' mail_recipient
 
+# while the user didn't choose either yes or no, re-ask him
 while [ -z "$notif" ]
 do
     read -p "do you want to enable desktop notifications ? (y/n) " choice_notif
