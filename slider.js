@@ -36,8 +36,7 @@ const reduce_possibilities = (possibilities , track_name) => {
     possibilities.forEach(
         track => {
             if (!track.tit_art){
-                throw new Error(track_name + " no match");
-                // TODO suppr le fichier
+                throw new Error(track_name + " no match")
             }
             else if (track.tit_art.toUpperCase() === track_name.toUpperCase())
                 exact_match.push(track)

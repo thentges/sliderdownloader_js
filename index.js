@@ -39,7 +39,6 @@ const get_tracks = async () => {
     }
 }
 
-// TODO PUT KBITS/S IN TITLE AND SAVE? OR BETTER: send a report email to myself ?
 get_tracks()
 
-// TODO faire un npm config qui npm install et cree le config .json
+// TODO faire un npm config qui npm install et cree le config.json
