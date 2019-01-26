@@ -39,5 +39,21 @@ You can find a ```config.json.example``` at the project root:
 
 ## HOW TO USE IT
 #### Scheduling it with crontab [RECOMMENDED]
-todo
-#### or
+If you are using a linux or mac os x computer, we recommend you to schedule this script using crontab. <br />
+Here is how you can do it easily:
+- open your command line interface
+- type ```crontab -e``` or ```env EDITOR=nano crontab -e``` if it's opening with vim and you prefer nano
+- in the opened file, just add a line like:
+```
+    * * * * * {your_dir}/run.sh
+```
+replace the 5 stars with the crontab command you like <br />
+If you don't know how to configure a cron, you can visit [this link](https://crontab.guru) to do it easily. <br/> </br>
+
+replace {your_dir} with the path to the cloned directory
+#### or just run it manually when you want
+To run it manually you just have to run the ```index.js``` file, you can type:
+-  ```node index.js```
+-  ```npm start```
+or
+-  ```./run.sh```
