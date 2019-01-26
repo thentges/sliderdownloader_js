@@ -20,7 +20,7 @@ const send_recap = () => {
     const options = {
       from: config.mail.username,
       to: config.mail.recipient || config.mail.username,
-      subject: `[sliderdownloader_js] your daily report`,
+      subject: get_subject(),
       html: get_mail_content()
     };
 
@@ -41,21 +41,38 @@ const add_track_to_report = (track, is_found) => {
 const get_mail_content = () => {
     let html = ''
 
-    downloaded_tracks.forEach(
-        (track) => {
-            html += `<b>${track.track_name}</b> <br />
-            downloaded: ${track.tit_art} <br />
-        bitrates: ${track.bitrate}kbits/s <br /><br />`
-        }
-    )
+    if (downloaded_tracks.length > 0) {
+        downloaded_tracks.forEach(
+            (track) => {
+                html += `<b>${track.track_name}</b> <br />
+                downloaded: ${track.tit_art} <br />
+            bitrates: ${track.bitrate}kbits/s <br /><br />`
+            }
+        )
+    }
 
-    html += '<br /><b>NOT FOUND:</b> <br/>'
-    not_found.forEach(
-        (track) => {
-            html += `${track}<br />`
-        }
-    )
+    if (not_found.length > 0) {
+        html += '<br /><b>NOT FOUND:</b> <br/>'
+        not_found.forEach(
+            (track) => {
+                html += `${track}<br />`
+            }
+        )
+    }
     return html
+}
+
+const get_subject = () => {
+    const OK = downloaded_tracks.length > 0
+    const NF = not_found.length > 0
+    let subject = `[sliderdownloader_js]`
+    if (OK)
+        subject += ` OK: ${downloaded_tracks.length}`
+    if (OK && NF)
+        subject +=  ' |'
+    if (NF)
+        subject += ` 404: ${not_found.length}`
+    return subject
 }
 
 module.exports = {
