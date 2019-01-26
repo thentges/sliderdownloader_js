@@ -6,4 +6,9 @@
         "username": "yourmail",
         "password": "yourpassword",
         "recipient": null
+    },
+    "pref": {
+        "mail": true,
+        "notif": true
+    }
 }

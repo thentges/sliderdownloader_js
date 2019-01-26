@@ -2,6 +2,9 @@ const notifier = require('node-notifier')
 const config = require('../config')
 
 const send_notification = (title, message, onClick) => {
+    if (!config.pref.notif)
+        return
+        
     notifier.notify(
       {
         title,

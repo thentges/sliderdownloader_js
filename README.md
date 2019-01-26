@@ -1,5 +1,5 @@
 # sliderdownloader_js
-This is a script made using node.js, automating music download from [http://slider.kz](http://slider.kz). <br /> 
+This is a script made using node.js, automating music download from [http://slider.kz](http://slider.kz). <br />
 I'm not responsible if anyone use this script for illegal purposes.
 <br /> <br />
 You need to have node installed on your machine in order to use this script/app.
@@ -15,7 +15,7 @@ Now, you have two choices:
 - type ```chmod +x ./install.sh``` in order to make the script executable
 - run the script, and follow the instructions ```./install.sh```
 #### creating configuration file by yourself
-The script is working using a non-pushed ```config.json``` file, where we store some confidential or computer specific data. 
+The script is working using a non-pushed ```config.json``` file, where we store some confidential or computer specific data.
 You can find a ```config.json.example``` at the project root:
 ```javascript
 {
@@ -26,6 +26,11 @@ You can find a ```config.json.example``` at the project root:
         "username": "yourmail", // this is the email address you'll use to send the report
         "password": "yourpassword", // this is the password associated to this email
         "recipient": null // this is the email address you want to send the recap to. If null, the recap will be sent to the sender address
+    },
+    "pref": {
+        "mail": true, // if you want to receive a report mail everytime the program download something, false if not
+        "notif": true // if you want to get notifications when the program starts and ends, false if not
+    }
 }
 ```
 - duplicate the ```config.json.example``` as ```config.json```

@@ -13,6 +13,9 @@ const downloaded_tracks = []
 const not_found = []
 
 const send_recap = () => {
+    if (!config.pref.mail)
+        return
+
     console.log(`[MAILER] starting`)
     const options = {
       from: config.mail.username,
