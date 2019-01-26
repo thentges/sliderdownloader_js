@@ -23,7 +23,7 @@ const send_recap = () => {
 
     transport.sendMail(options,
         (err, info) => {
-            err ? console.log(`[MAILER][ERROR] ${err}`) : console.log(`[MAILER]${info}`)
+            err ? console.log(`[MAILER][ERROR] ${err}`) : console.log(`[MAILER] Done`)
         }
     );
 }

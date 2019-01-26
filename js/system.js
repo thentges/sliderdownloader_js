@@ -1,6 +1,7 @@
 const axios = require('axios')
 const fs = require('fs')
 const config = require('../config.json')
+const EmptyFileError = require('../errors/EmptyFileError')
 
 const get_tracks = () => {
     const txt_path = config.txt_path
@@ -8,11 +9,19 @@ const get_tracks = () => {
         fs.readFile(txt_path, 'utf8', (err, data) => {
             if (data)
                 data = data.split('\n')
+            else
+                reject(new EmptyFileError())
             resolve(data)
+
         })
     })
 }
-// TODO clean le .txt qd fini
+
+const clear_file = () => {
+    fs.writeFile(config.txt_path, '', () => {
+        console.log('[SYSTEM] file cleared')
+    })
+}
 
 // download a file from url to track_name.mp3
 const download = async (url, track_name) => {
@@ -33,5 +42,6 @@ const download = async (url, track_name) => {
 
 module.exports = {
     get_tracks,
-    download
+    download,
+    clear_file
 }

@@ -10,8 +10,12 @@ const get_track = async track_name => {
         await system.download(track.link, track.track_name)
         mailer.add_track_to_report(track, true)
     } catch (e) {
-        console.log(`[ERROR] ${e.message}`);
-        mailer.add_track_to_report(track_name, false)
+        if (e.name === "NoMatchError") {
+            console.log(`[ERROR] ${e.message}`)
+            mailer.add_track_to_report(track_name, false)
+        }
+        else
+            throw e
     }
 }
 
@@ -28,13 +32,17 @@ const get_tracks = async () => {
                 }
             )
         )
+        system.clear_file()
         notifications.end(track_names)
         mailer.send_recap()
     } catch (e) {
-        console.log(`[OVER] NO TRACK TO DOWNLOAD`)
+        if (e.name === "EmptyFileError") {
+            console.log(`[OVER] NO TRACK TO DOWNLOAD`)
+            notifications.no_tracks()
+        }
+        else
+            throw e
     }
 }
 
 get_tracks()
-
-// TODO faire un npm config qui npm install et cree le config.json et chmod + x le .sh

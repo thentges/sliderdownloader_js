@@ -1,6 +1,7 @@
 const axios = require('axios')
 const fs = require('fs')
 const config = require('../config.json')
+const NoMatchError = require('../errors/NoMatchError')
 
 const INFO_URL = 'http://slider.kz/vk_auth.php?q='
 const MORE_INFO_URL = 'http://slider.kz/info/'
@@ -36,8 +37,7 @@ const reduce_possibilities = (possibilities , track_name) => {
     possibilities.forEach(
         track => {
             if (!track.tit_art){
-                // TODO proper error
-                throw new Error(track_name + " no match")
+                throw new NoMatchError(track_name + " no match")
             }
             else if (track.tit_art.toUpperCase() === track_name.toUpperCase())
                 exact_match.push(track)
