@@ -11,7 +11,6 @@ const get_track = async track_name => {
         mailer.add_track_to_report(track, true)
     } catch (e) {
         if (e.name === "NoMatchError") {
-            console.log(`[ERROR] ${e.message}`)
             mailer.add_track_to_report(track_name, false)
         }
         else
@@ -36,10 +35,8 @@ const get_tracks = async () => {
         notifications.end(track_names)
         mailer.send_recap()
     } catch (e) {
-        if (e.name === "EmptyFileError") {
-            console.log(`[OVER] NO TRACK TO DOWNLOAD`)
+        if (e.name === "EmptyFileError")
             notifications.no_tracks()
-        }
         else
             throw e
     }
