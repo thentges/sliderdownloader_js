@@ -12,6 +12,27 @@ read -sp 'enter your (sender) email password ::: ' mail_password
 echo
 read -p 'enter your mail (receiving) recaps ::: ' mail_recipient
 
+# while the user didn't choose either yes or no, re-ask him
+while [ -z "$notif" ]
+do
+    read -p "do you want to enable desktop notifications ? (y/n) " choice_notif
+    case "$choice_notif" in
+      y|Y ) notif='true';;
+      n|N ) notif='false';;
+      *) echo '[error] type y (yes) or n (no)';;
+    esac
+done
+
+while [ -z "$mail" ]
+do
+    read -p "do you want to enable report mailing ? (y/n) " choice_mail
+    case "$choice_mail" in
+      y|Y ) mail='true';;
+      n|N ) mail='false';;
+      *) echo '[error] type y (yes) or n (no)';;
+    esac
+done
+
 # delete the actual config.json if it exist
 if [ -f config.json ]; then
     rm config.json
@@ -26,7 +47,13 @@ echo "{
         \"username\": \"${mail_username}\",
         \"password\": \"${mail_password}\",
         \"recipient\": \"${mail_recipient}\"
-}" >> config.json
+    },
+    \"pref\": {
+        \"mail\": ${mail},
+        \"notif\": ${notif}
+    }
+}
+" >> config.json
 
 
 cd $BASEDIR && npm install && chmod +x ./run.sh
