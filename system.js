@@ -1,3 +1,4 @@
+const axios = require('axios')
 const fs = require('fs')
 const config = require('./config.json')
 
@@ -11,9 +12,26 @@ const get_tracks = () => {
         })
     })
 }
+// TODO clean le .txt qd fini
 
-// TODO delete tracks when DL
+// download a file from url to track_name.mp3
+const download = async (url, track_name) => {
+    const path = `${config.download_dir}${track_name}.mp3`
+    const writer = fs.createWriteStream(path)
+    const resp = await axios({
+        url,
+        method: 'GET',
+        responseType: 'stream'
+    })
+    resp.data.pipe(writer)
+    return new Promise((resolve, reject) => {
+        writer.on('finish', resolve)
+        writer.on('error', reject)
+      })
+}
+
 
 module.exports = {
-    get_tracks
+    get_tracks,
+    download
 }

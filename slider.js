@@ -7,20 +7,10 @@ const MORE_INFO_URL = 'http://slider.kz/info/'
 const DOWNLOAD_URL = 'http://slider.kz/download/'
 const LIMIT = 5
 
-// download a file from url to track_name.mp3
-const download = async (url, track_name) => {
-    const path = `${config.download_dir}${track_name}.mp3`
-    const writer = fs.createWriteStream(path)
-    const resp = await axios({
-        url,
-        method: 'GET',
-        responseType: 'stream'
-    })
-    resp.data.pipe(writer)
-    return new Promise((resolve, reject) => {
-        writer.on('finish', resolve)
-        writer.on('error', reject)
-      })
+const get_track_formated = async (track_name) => {
+    let possibilities = await get_possibilities(track_name)
+    let track_formated = await get_best_track_with_link(possibilities, track_name)
+    return track_formated
 }
 
 // get all results
@@ -31,12 +21,12 @@ const get_possibilities = async track_name => {
 }
 
 // get the best download link within possibilities array
-const get_best_link = async (possibilities, track_name) => {
+const get_best_track_with_link = async (possibilities, track_name) => {
     const restricted_pos = reduce_possibilities(possibilities, track_name)
     await get_all_bitrates(restricted_pos)
     const best_track = get_best_track(restricted_pos)
     const best_link = get_url(DOWNLOAD_URL, best_track)
-    return best_link
+    return {link: best_link, ...best_track}
 }
 
 // TODO clean this method
@@ -46,11 +36,12 @@ const reduce_possibilities = (possibilities , track_name) => {
     possibilities.forEach(
         track => {
             if (!track.tit_art){
-                throw new Error(track_name + " no match");
-                // TODO suppr le fichier
+                throw new Error(track_name + " no match")
             }
             else if (track.tit_art.toUpperCase() === track_name.toUpperCase())
                 exact_match.push(track)
+
+            track.track_name = track_name
 
             if (exact_match.length === 5){
                 console.log(`[MATCHING] limit at 5 exact matches for ${track_name}`)
@@ -151,7 +142,5 @@ const get_url = (type, object) => {
 }
 
 module.exports = {
-    get_possibilities,
-    get_best_link,
-    download
+    get_track_formated,
 }
