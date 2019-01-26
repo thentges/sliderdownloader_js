@@ -36,6 +36,7 @@ const reduce_possibilities = (possibilities , track_name) => {
     possibilities.forEach(
         track => {
             if (!track.tit_art){
+                // TODO proper error
                 throw new Error(track_name + " no match")
             }
             else if (track.tit_art.toUpperCase() === track_name.toUpperCase())

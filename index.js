@@ -37,4 +37,4 @@ const get_tracks = async () => {
 
 get_tracks()
 
-// TODO faire un npm config qui npm install et cree le config.json
+// TODO faire un npm config qui npm install et cree le config.json et chmod + x le .sh
