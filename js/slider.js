@@ -1,6 +1,5 @@
 const axios = require('axios')
 const fs = require('fs')
-const config = require('../config.json')
 const NoMatchError = require('../errors/NoMatchError')
 
 const INFO_URL = 'http://slider.kz/vk_auth.php?q='
@@ -31,30 +30,36 @@ const get_best_track_with_link = async (possibilities, track_name) => {
 }
 
 const reduce_possibilities = (possibilities , track_name) => {
-    const exact_match = []
+    const exact_matches = []
+    const nice_matches = []
+
     possibilities.forEach(
         track => {
             if (!track.tit_art){
                 throw new NoMatchError(track_name + " no match")
             }
             else if (track.tit_art.toUpperCase() === track_name.toUpperCase())
-                exact_match.push(track)
+                exact_matches.push(track)
+
+            if (track.tit_art.toUpperCase().indexOf(track_name.toUpperCase()) != -1 ||
+                track.tit_art.toUpperCase().slice(-5) === track_name.toUpperCase().slice(-5))
+                nice_matches.push(track)
 
             track.track_name = track_name
 
-            if (exact_match.length === 5){
+            if (exact_matches.length === 5){
                 console.log(`[MATCHING] limit at 5 exact matches for ${track_name}`)
-                return exact_match;
+                return exact_matches;
             }
 
         }
     )
-    if (exact_match.length < 1){
-        console.log(`[MATCHING] no exact match ${track_name}`)
+    if (exact_matches.length > 0)
+        return exact_matches
+    else if (nice_matches.length > 0)
+        return nice_matches
+    else
         return possibilities.slice(0, LIMIT)
-    }
-    console.log(`[MATCHING] ${exact_match.length} exact matches for ${track_name}`)
-    return exact_match
 }
 
 // get the best track from possibilities
@@ -84,9 +89,13 @@ const get_all_bitrates = async possibilities => {
 // get the bitrate of one track
 const get_bitrate = async track => {
     let url = get_url(MORE_INFO_URL, track)
-    let bitrate = await get_request(MORE_INFO_URL, url)
-    track.bitrate = bitrate
-    return bitrate
+    try {
+        let bitrate = await get_request(MORE_INFO_URL, url)
+        track.bitrate = bitrate
+    } catch (e) {
+        track.bitrate = 1
+    }
+    return track.bitrate
 }
 
 // make a get request and convert the data depending on the type
